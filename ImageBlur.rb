@@ -13,59 +13,66 @@ class Image
 		end
 	end
 
+	# This method validates specified matrix in the initialize method
 	def validate_matrix(matrix)
 		is_array?(matrix)
 		matrix.each { |element| is_array?(element)}
 	end
 
-	def transformation
-		@matrix_traformed = @matrix
-		@matrix.each_with_index do |one_dim_array, one_dim_array_index|
-			if one_dim_array.include?(1)
-				selected_indexes(one_dim_array).each do |selected_index|
-				@matrix_trasform = transform_inline(selected_index, one_dim_array)
-
-		   #    if (one_dim_array_index - 1 >= 0)
-					#   @matrix[one_dim_array_index - 1][selected_index] = 1
-					# # elsif (one_dim_array_index + 1 <= @matrix.length-1)
-					# #   @matrix[one_dim_array_index + 1][selected_index] = 1	  
-				 #  end
-				end
-			end
-		end
-	end
-
-	def transform_inline(index, array)
-	  # replace the first element
-		if index.eql?(0)
-			array[index + 1] = 1
-		# replace the last element
-		elsif index.eql?(array.length - 1)
-			array[index - 1] = 1
-		# replace any if not the first and last
-		else
-			array[index - 1] = 1
-			array[index + 1] = 1 
-		end
-	end
-
-	def selected_indexes(one_dim_array)
-		one_dim_array.each_index.select{|element| one_dim_array[element] == 1}
-	end
-
+# This method outputs transformed matrix
 	def output_image
-		@matrix_traformed.each do |element|
+		@transformed_matrix.each do |element|
 			puts element.join
 		end
+	end
+
+	# This method replaces all one to be zero. 
+	def blank_matrix(matrix)
+		matrix.map do |element_array|
+			element_array.map {|element| element = 1 ? element = 0 : element = 0 }
+		end
+	end
+
+  # this method returns transformed matrix
+	def transformation
+		# assign blank matrix with the same dimention as original @matrix
+		@transformed_matrix = blank_matrix(@matrix) 
+		@matrix.each_with_index do |element_array, i|
+			element_array.each_with_index do |element, j|
+				if element == 1 
+					@transformed_matrix[i][j] = 1
+					# if the first element change only the next
+					if j == 0
+						@transformed_matrix[i][j+1] = 1
+					# if the last element change only the previous
+					elsif j == element_array.length - 1
+						@transformed_matrix[i][j-1] = 1
+					# change the previous and the next	
+				  else
+				  	@transformed_matrix[i][j-1] = 1
+				  	@transformed_matrix[i][j+1] = 1
+				  end	
+
+				  if i == 0
+				  	@transformed_matrix[i+1][j] = 1
+				  elsif i == @matrix.length - 1
+				  	@transformed_matrix[i-1][j] = 1
+				  else
+				  	@transformed_matrix[i+1][j] = 1
+				  	@transformed_matrix[i-1][j] = 1
+				  end	
+				end
+			end
+		end	
 	end
 end
 
 image = Image.new([
-  [0, 0, 0, 1],
+  [1, 0, 0, 0],
+  [1, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 1, 0, 0],
-  [1, 0, 0, 1]
+  [0, 0, 0, 0]
 ])
 
 image.transformation
- image.output_image
+image.output_image
