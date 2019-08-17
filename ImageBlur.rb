@@ -58,8 +58,8 @@ class Image
 				  elsif i == @matrix.length - 1
 				  	@transformed_matrix[i-1][j] = 1
 				  else
-				  	@transformed_matrix[i+1][j] = 1
 				  	@transformed_matrix[i-1][j] = 1
+				  	@transformed_matrix[i+1][j] = 1
 				  end	
 				end
 			end
