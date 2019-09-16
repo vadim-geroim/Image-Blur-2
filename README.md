@@ -6,8 +6,8 @@ Solution and Tests to the Columbia University Image #2 problem.
 - `spec/image_spec.rb` - includes three different examples
 
 ## Solution
-- the method `blank_matrix` - gets as a parameter matrix and
-and converts it to the matrix with the same dimention but with 
+- the method `blank_matrix` - gets as a parameter matrix and 
+converts it to the matrix with the same dimention but with 
 only zero values in it. 
 - the method `blur` - iterates through the matrix specified in a 
 class constructor and if met ones it will replaces values in the 
