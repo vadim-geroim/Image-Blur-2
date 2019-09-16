@@ -1,22 +1,8 @@
-# Image Blur #1: Build Data Representation of an Image
-
 class Image
+  attr_accessor :transformed_matrix
+
   def initialize(matrix)
     @matrix = matrix
-    validate_matrix(@matrix)
-  end
-
-  def is_array?(array)
-    unless array.instance_of? Array
-      puts "Please verify the data for matrix. It requires to be a two-dimentional array."
-      exit 
-    end
-  end
-
-  # This method validates specified matrix in the initialize method
-  def validate_matrix(matrix)
-    is_array?(matrix)
-    matrix.each { |element| is_array?(element)}
   end
 
 # This method outputs transformed matrix
@@ -26,16 +12,15 @@ class Image
     end
   end
 
-  # This method replaces all one to be zero. 
+  # This method clones matrix but replaces all ones to be zero
   def blank_matrix(matrix)
     matrix.map do |element_array|
       element_array.map {|element| element = 1 ? element = 0 : element = 0 }
     end
   end
 
-  # this method returns transformed matrix
-  def transformation
-    # assign blank matrix with the same dimention as original @matrix
+  def blur
+    #Creates template result matrix with the same dimention as original
     @transformed_matrix = blank_matrix(@matrix) 
     @matrix.each_with_index do |element_array, i|
       element_array.each_with_index do |element, j|
@@ -63,16 +48,7 @@ class Image
           end 
         end
       end
-    end 
+    end
+    @transformed_matrix 
   end
 end
-
-image = Image.new([
-  [1, 0, 0, 0],
-  [1, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0]
-])
-
-image.transformation
-image.output_image
